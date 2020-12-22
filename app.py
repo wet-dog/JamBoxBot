@@ -30,7 +30,7 @@ def interactions():
         else:
             players.append(json['member']['user']['id'])
             print(players)
-            url = f"https://discord.com/api/v8/webhooks/application.id/{interaction_token[0]}/messages/@original"
+            url = f"https://discord.com/api/v8/webhooks/{MY_APPLICATION_ID}/{interaction_token[0]}/messages/@original"
             headers = {"Authorization": f"Bot {BOT_TOKEN}"}
             json = {"content": " ".join(players)}
             r = requests.patch(url, headers=headers, json=json)
