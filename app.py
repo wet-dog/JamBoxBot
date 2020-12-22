@@ -39,5 +39,5 @@ def interactions():
             r = requests.patch(url, headers=headers, json=json)
             # print(r)
             return jsonify({
-                'type': InteractionResponseType.PONG
+                'type': InteractionResponseType.ACKNOWLEDGE
             })
