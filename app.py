@@ -5,6 +5,7 @@ import discord
 import requests
 from celery import Celery
 import redis
+import json
 
 app = Flask(__name__)
 
@@ -23,19 +24,19 @@ BOT_TOKEN = os.environ['BOT_TOKEN']
 @app.route('/interactions', methods=['POST'])
 @verify_key_decorator(CLIENT_PUBLIC_KEY)
 def interactions():
-    json = request.json
-    if json['type'] == InteractionType.APPLICATION_COMMAND:
-        discord_id = json['member']['user']['id']
-        game_name = json['data']['options'][0]['value']
+    data = request.json
+    if data['type'] == InteractionType.APPLICATION_COMMAND:
+        discord_id = data['member']['user']['id']
+        game_name = data['data']['options'][0]['value']
         if not r.exists("interaction_token"):
             print("---------------EMPTY PLAYERS---------------")
-            r.set("interaction_token", json['token'])
+            r.set("interaction_token", data['token'])
             r.hsetnx("players", discord_id, game_name)
             # r.rpush("players", discord_id)
             return jsonify({
                 'type': InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
                 'data': {
-                    'content': json['member']['user']['id']
+                    'content': data['member']['user']['id']
                 }
             })
             # print(players)
@@ -50,8 +51,8 @@ def interactions():
             # content = r.lrange("players", 0, -1)
             print(content)
             # json = {"content": " ".join(content)}
-            json = {"content": json.dumps(content)}
-            req = requests.patch(url, headers=headers, json=json)
+            data = {"content": json.dumps(content)}
+            req = requests.patch(url, headers=headers, json=data)
             # print(r)
             return jsonify({
                 'type': InteractionResponseType.ACKNOWLEDGE
