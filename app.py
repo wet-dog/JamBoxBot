@@ -1,3 +1,4 @@
+import os
 from flask import Flask, request, jsonify
 from discord_interactions import verify_key_decorator, InteractionType, InteractionResponseType
 import discord
@@ -7,6 +8,7 @@ app = Flask(__name__)
 
 MY_APPLICATION_ID = 789179929979125821
 CLIENT_PUBLIC_KEY = "5c014e0bf7dec5d459505af626f181d3ff246a34a10faa6a9dd6a2e29613888f"
+BOT_TOKEN = os.environ['BOT_TOKEN']
 
 players = []
 
@@ -26,8 +28,9 @@ def interactions():
         else:
             interaction_token = json['token']
             url = f"https://discord.com/api/v8/webhooks/application.id/{interaction_token}/messages/@original"
-            content = " ".join(players)
-            requests.patch(url, json=content)
+            headers = {"Authorization": f"Bot {BOT_TOKEN}"}
+            json = {"content": " ".join(players)}
+            requests.patch(url, headers=headers, json=json)
             return jsonify({
                 'type': InteractionResponseType.PONG
             })
