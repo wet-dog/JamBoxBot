@@ -7,12 +7,11 @@ from celery import Celery
 import redis
 
 app = Flask(__name__)
-app.conf.update(BROKER_URL=os.environ['REDIS_URL'],
-                CELERY_RESULT_BACKEND=os.environ['REDIS_URL'],
-                CELERY_TASK_SERIALIZER="json")
 
 celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'])
-celery.conf.update(app.config)
+celery.conf.update(BROKER_URL=os.environ['REDIS_URL'],
+                   CELERY_RESULT_BACKEND=os.environ['REDIS_URL'],
+                   CELERY_TASK_SERIALIZER="json")
 
 r = redis.from_url(os.environ["REDIS_URL"], decode_responses=True)
 
