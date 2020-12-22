@@ -19,6 +19,7 @@ def interactions():
     json = request.json
     if json['type'] == InteractionType.APPLICATION_COMMAND:
         if not players:
+            print("---------------EMPTY PLAYERS---------------")
             players.append(json['member']['user']['id'])
             interaction_token.append(json['token'])
             return jsonify({
@@ -27,15 +28,16 @@ def interactions():
                     'content': json['member']['user']['id']
                 }
             })
-            print(players)
+            # print(players)
         else:
+            print("************PLAYERS********************")
             players.append(json['member']['user']['id'])
-            print(players)
+            # print(players)
             url = f"https://discord.com/api/v8/webhooks/{MY_APPLICATION_ID}/{interaction_token[0]}/messages/@original"
             headers = {"Authorization": f"Bot {BOT_TOKEN}"}
             json = {"content": " ".join(players)}
             r = requests.patch(url, headers=headers, json=json)
-            print(r)
+            # print(r)
             return jsonify({
                 'type': InteractionResponseType.PONG
             })
