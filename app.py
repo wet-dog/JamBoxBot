@@ -33,7 +33,8 @@ def interactions():
             url = f"https://discord.com/api/v8/webhooks/application.id/{interaction_token[0]}/messages/@original"
             headers = {"Authorization": f"Bot {BOT_TOKEN}"}
             json = {"content": " ".join(players)}
-            requests.patch(url, headers=headers, json=json)
+            r = requests.patch(url, headers=headers, json=json)
+            print(r)
             return jsonify({
                 'type': InteractionResponseType.PONG
             })
