@@ -8,7 +8,7 @@ import redis
 
 app = Flask(__name__)
 
-celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'])
+celery = Celery(app.name)
 celery.conf.update(BROKER_URL=os.environ['REDIS_URL'],
                    CELERY_RESULT_BACKEND=os.environ['REDIS_URL'],
                    CELERY_TASK_SERIALIZER="json")
