@@ -41,7 +41,7 @@ def interactions():
             r.rpush("players", json['member']['user']['id'])
             # print(players)
             interaction_token = r.get("interaction_token")
-            url = f"https://discord.com/api/v8/webhooks/{MY_APPLICATION_ID}/{interaction_token[0]}/messages/@original"
+            url = f"https://discord.com/api/v8/webhooks/{MY_APPLICATION_ID}/{interaction_token}/messages/@original"
             headers = {"Authorization": f"Bot {BOT_TOKEN}"}
             content = r.lrange("players", 0, -1)
             print(content)
