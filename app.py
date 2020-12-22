@@ -25,10 +25,13 @@ BOT_TOKEN = os.environ['BOT_TOKEN']
 def interactions():
     json = request.json
     if json['type'] == InteractionType.APPLICATION_COMMAND:
+        discord_id = json['member']['user']['id']
+        game_name = json['data']['options'][0]['value']
         if not r.exists("interaction_token"):
             print("---------------EMPTY PLAYERS---------------")
             r.set("interaction_token", json['token'])
-            r.rpush("players", json['member']['user']['id'])
+            r.hsetnx("players", discord_id, game_name)
+            # r.rpush("players", discord_id)
             return jsonify({
                 'type': InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
                 'data': {
@@ -38,14 +41,16 @@ def interactions():
             # print(players)
         else:
             print("************PLAYERS********************")
-            r.rpush("players", json['member']['user']['id'])
+            r.hsetnx("players", discord_id, game_name)
             # print(players)
             interaction_token = r.get("interaction_token")
             url = f"https://discord.com/api/v8/webhooks/{MY_APPLICATION_ID}/{interaction_token}/messages/@original"
             headers = {"Authorization": f"Bot {BOT_TOKEN}"}
-            content = r.lrange("players", 0, -1)
+            content = r.hgetall("players")
+            # content = r.lrange("players", 0, -1)
             print(content)
-            json = {"content": " ".join(content)}
+            # json = {"content": " ".join(content)}
+            json = {"content": json.dumps(content)}
             req = requests.patch(url, headers=headers, json=json)
             # print(r)
             return jsonify({
