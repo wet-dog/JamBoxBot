@@ -3,8 +3,18 @@ from flask import Flask, request, jsonify
 from discord_interactions import verify_key_decorator, InteractionType, InteractionResponseType
 import discord
 import requests
+from celery import Celery
+import redis
 
 app = Flask(__name__)
+app.conf.update(BROKER_URL=os.environ['REDIS_URL'],
+                CELERY_RESULT_BACKEND=os.environ['REDIS_URL'],
+                CELERY_TASK_SERIALIZER="json")
+
+celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'])
+celery.conf.update(app.config)
+
+r = redis.from_url(os.environ["REDIS_URL"], decode_responses=True)
 
 MY_APPLICATION_ID = 789179929979125821
 CLIENT_PUBLIC_KEY = "5c014e0bf7dec5d459505af626f181d3ff246a34a10faa6a9dd6a2e29613888f"
