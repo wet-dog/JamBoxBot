@@ -26,6 +26,7 @@ def interactions():
                 }
             })
         else:
+            print(players)
             interaction_token = json['token']
             url = f"https://discord.com/api/v8/webhooks/application.id/{interaction_token}/messages/@original"
             headers = {"Authorization": f"Bot {BOT_TOKEN}"}
