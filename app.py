@@ -46,7 +46,10 @@ def interactions():
 
             headers = {"Authorization": f"Bot {BOT_TOKEN}"}
             content = r.hgetall("players")
-            data = {"content": json.dumps(content)}
+            content = "\n".join([f"{k}: {v}" for k, v in content.items()])
+            embed = discord.Embed(title="Lobby")
+            embed.add_field(name="Players", value=content)
+            data = {"content": "", "embeds": [embed]}
             requests.patch(url, headers=headers, json=data)
             
             return jsonify({
