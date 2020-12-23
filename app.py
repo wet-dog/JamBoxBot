@@ -49,6 +49,7 @@ def interactions():
             content = "\n".join([f"{k}: {v}" for k, v in content.items()])
             embed = discord.Embed(title="Lobby")
             embed.add_field(name="Players", value=content)
+            embed = json.dumps(embed.to_dict())
             data = {"content": "", "embeds": [embed]}
             requests.patch(url, headers=headers, json=data)
             
