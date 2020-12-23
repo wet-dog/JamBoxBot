@@ -29,31 +29,26 @@ def interactions():
         discord_id = data['member']['user']['id']
         game_name = data['data']['options'][0]['value']
         if not r.exists("interaction_token"):
-            print("---------------EMPTY PLAYERS---------------")
             r.set("interaction_token", data['token'])
             r.hsetnx("players", discord_id, game_name)
-            # r.rpush("players", discord_id)
+
             return jsonify({
                 'type': InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
                 'data': {
                     'content': data['member']['user']['id']
                 }
             })
-            # print(players)
         else:
-            print("************PLAYERS********************")
-            r.hsetnx("players", discord_id, game_name)
-            # print(players)
             interaction_token = r.get("interaction_token")
             url = f"https://discord.com/api/v8/webhooks/{MY_APPLICATION_ID}/{interaction_token}/messages/@original"
+
+            r.hsetnx("players", discord_id, game_name)
+
             headers = {"Authorization": f"Bot {BOT_TOKEN}"}
             content = r.hgetall("players")
-            # content = r.lrange("players", 0, -1)
-            print(content)
-            # json = {"content": " ".join(content)}
             data = {"content": json.dumps(content)}
-            req = requests.patch(url, headers=headers, json=data)
-            # print(r)
+            requests.patch(url, headers=headers, json=data)
+            
             return jsonify({
                 'type': InteractionResponseType.ACKNOWLEDGE
             })
