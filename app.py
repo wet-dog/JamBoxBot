@@ -55,9 +55,9 @@ def interactions():
             embed = json.dumps(embed)
             print(embed)
             # print(json.dumps(embed))
-            data = {"content": "foo", "embeds": [embed]}
+            data = {"content": "foo"}
             print(data)
-            req = requests.patch(url, headers=headers, json=data)
+            req = requests.patch(url, headers=headers, json=json.dumps(data))
             print(req.text)
             return jsonify({
                 'type': InteractionResponseType.ACKNOWLEDGE
