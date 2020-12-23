@@ -47,8 +47,10 @@ def interactions():
             headers = {"Authorization": f"Bot {BOT_TOKEN}"}
             content = r.hgetall("players")
             content = "\n".join([f"{k}: {v}" for k, v in content.items()])
+            print(content)
             embed = discord.Embed(title="Lobby")
             embed.add_field(name="Players", value=content)
+            print(embed)
             embed = [embed.to_dict()]
             data = {"embeds": embed}
             data = json.dumps(data)
