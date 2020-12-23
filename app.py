@@ -49,12 +49,14 @@ def interactions():
             content = "\n".join([f"{k}: {v}" for k, v in content.items()])
             print(content)
             embed = discord.Embed(title="Lobby")
+            j = discord.Embed(title="foo")
             embed.add_field(name="Players", value=content)
             embed = [embed.to_dict()]
             print(embed)
+            print(json.dumps(embed))
             data = {"content": "foo", "embeds": json.dumps(embed)}
             req = requests.patch(url, headers=headers, json=data)
-            print(req)
+            print(req.text)
             return jsonify({
                 'type': InteractionResponseType.ACKNOWLEDGE
             })
