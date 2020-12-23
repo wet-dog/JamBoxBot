@@ -55,7 +55,7 @@ def interactions():
             embed = json.dumps(embed)
             print(embed)
             # print(json.dumps(embed))
-            data = {"content": "foo", "embeds": [json.dumps({"title": "Lobby"})]}
+            data = {"content": "foo", "embeds": [{"title": "Lobby"}]}
             print(data)
             req = requests.patch(url, headers=headers, json=data)
             print(req.text)
