@@ -52,10 +52,10 @@ def interactions():
             embed.add_field(name="Players", value=content)
             embed = [embed.to_dict()]
             print(embed)
-            data = {"embeds": embed}
+            data = {"content": "foo", "embeds": embed}
             data = json.dumps(data)
-            requests.patch(url, headers=headers, json=data)
-            
+            req = requests.patch(url, headers=headers, json=data)
+            print(req)
             return jsonify({
                 'type': InteractionResponseType.ACKNOWLEDGE
             })
