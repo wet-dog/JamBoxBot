@@ -51,11 +51,11 @@ def interactions():
             embed = discord.Embed(title="Lobby")
             j = discord.Embed(title="foo")
             embed.add_field(name="Players", value=content)
-            embed = [embed.to_dict()]
+            embed = embed.to_dict()
+            embed = json.dumps(embed)
             print(embed)
             # print(json.dumps(embed))
-            data = {"content": "foo", "embeds": embed}
-            data = json.dumps(data)
+            data = {"content": "foo", "embeds": [embed]}
             print(data)
             req = requests.patch(url, headers=headers, json=data)
             print(req.text)
