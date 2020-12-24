@@ -47,13 +47,13 @@ def interactions():
             headers = {"Authorization": f"Bot {BOT_TOKEN}"}
             content = r.hgetall("players")
             content = "\n".join([f"{k}: {v}" for k, v in content.items()])
-            print(content)
-            embed = discord.Embed(title="Lobby")
+            embed = discord.Embed(title="Lobby", color=0xadd8e6)
             embed.add_field(name="Players", value=content)
+            embed.set_author(icon_url="https://i.imgur.com/RUzETr6.jpg")
             embed = embed.to_dict()
-            data = {"content": "foo", "embeds": [embed]}
-            req = requests.patch(url, headers=headers, json=data)
-            print(req.text)
+            data = {"embeds": [embed]}
+            requests.patch(url, headers=headers, json=data)
+
             return jsonify({
                 'type': InteractionResponseType.ACKNOWLEDGE
             })
