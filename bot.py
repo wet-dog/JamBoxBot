@@ -35,4 +35,24 @@ async def on_message(message):
     if message.content.startswith('$hello'):
         await message.channel.send('Hello!')
 
+@client.event
+async def on_message_edit(before, after):
+    # after = message
+    # after.embeds
+    # after.embeds[0].fields[-1].name
+    # if message edit was by the bot
+    if after.author == client.user:
+        embed = after.embeds[0]
+        field = embed.fields[0]
+        players = field.value.split("\n")
+        players = [x for x in players if x]
+        player = players[-1]
+        info = player.split(": ")
+        user_id = player[0]
+        print(user_id)
+        user = client.get_user(user_id)
+
+        await user.send('👀')
+
+
 client.run(BOT_TOKEN)
