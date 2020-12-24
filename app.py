@@ -32,10 +32,19 @@ def interactions():
             r.set("interaction_token", data['token'])
             r.hsetnx("players", discord_id, game_name)
 
+            content = r.hgetall("players")
+            content = "\n".join([f"{k}: {v}" for k, v in content.items()])
+            embed = discord.Embed(title="Lobby", color=0x3498DB)
+            embed.add_field(name="Players", value=content)
+            # embed.set_author(name="Cum", url="https://en.wikipedia.org/wiki/Ellen_DeGeneres", icon_url="https://i.imgur.com/RUzETr6.jpg")
+            embed.set_thumbnail(url="https://i.imgur.com/RUzETr6.jpg")
+            embed = embed.to_dict()
+
             return jsonify({
                 'type': InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
                 'data': {
-                    'content': data['member']['user']['id']
+                    'content': "",
+                    'embeds': [embed]
                 }
             })
         else:
@@ -47,7 +56,7 @@ def interactions():
             headers = {"Authorization": f"Bot {BOT_TOKEN}"}
             content = r.hgetall("players")
             content = "\n".join([f"{k}: {v}" for k, v in content.items()])
-            embed = discord.Embed(title="Lobby", color=0xadd8e6)
+            embed = discord.Embed(title="Lobby", color=0x3498DB)
             embed.add_field(name="Players", value=content)
             # embed.set_author(name="Cum", url="https://en.wikipedia.org/wiki/Ellen_DeGeneres", icon_url="https://i.imgur.com/RUzETr6.jpg")
             embed.set_thumbnail(url="https://i.imgur.com/RUzETr6.jpg")
