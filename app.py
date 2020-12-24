@@ -49,7 +49,8 @@ def interactions():
             content = "\n".join([f"{k}: {v}" for k, v in content.items()])
             embed = discord.Embed(title="Lobby", color=0xadd8e6)
             embed.add_field(name="Players", value=content)
-            embed.set_author(icon_url="https://i.imgur.com/RUzETr6.jpg")
+            embed.set_author(name="Cum", url="https://en.wikipedia.org/wiki/Ellen_DeGeneres", icon_url="https://i.imgur.com/RUzETr6.jpg")
+            embed.set_thumbnail(url="https://i.imgur.com/RUzETr6.jpg")
             embed = embed.to_dict()
             data = {"embeds": [embed]}
             requests.patch(url, headers=headers, json=data)
